@@ -20,7 +20,7 @@ const db = require("./db/connectDB");
 require("dotenv").config();
 
 const port = process.env.PORT_NUM || 8000;
-// const clientPort = process.env.CLIENT_PORT_NUM || 3000;
+const clientPort = process.env.CLIENT_PORT_NUM || 3000;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -28,8 +28,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.use(cors({ credentials: true, origin: `${process.env.CLIENT_URL}` }));
-// app.use(cors({ credentials: true, origin: `http://localhost:${clientPort}` }));
+// app.use(cors({ credentials: true, origin: `${process.env.CLIENT_URL}` }));
+app.use(cors({ credentials: true, origin: `http://localhost:${clientPort}` }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());

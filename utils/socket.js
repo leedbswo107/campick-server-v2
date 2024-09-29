@@ -11,7 +11,8 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [`${process.env.CLIENT_URL}`],
+    origin: `http://localhost:${process.env.CLIENT_PORT_NUM}`,
+    // origin: [`${process.env.CLIENT_URL}`],
     methods: ["GET", "POST"],
   },
 });
