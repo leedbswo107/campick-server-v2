@@ -54,6 +54,16 @@ class UserService {
       console.error(error);
     }
   }
+  async duplicateEmailCheck(email) {
+    try {
+      const emailCheck = await User.findOne({ username: email });
+      let emailStatus = false;
+      if (emailCheck) return (emailStatus = true);
+      return emailStatus;
+    } catch (error) {
+      console.error(error);
+    }
+  }
   async duplicateNickname(nickname) {
     try {
       const nicknameCheck = await User.findOne({ nickname });

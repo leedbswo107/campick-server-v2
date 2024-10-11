@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -29,7 +30,23 @@ cloudinary.config({
 });
 
 // app.use(cors({ credentials: true, origin: `${process.env.CLIENT_URL}` }));
-app.use(cors({ credentials: true, origin: `http://localhost:${clientPort}` }));
+
+// app.use(cors({ credentials: true, origin: `http://localhost:${clientPort}` }));
+
+app.use(
+  session({
+    secret: "your session secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
+let corsOptions = {
+  origin: `http://localhost:${clientPort}`,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
