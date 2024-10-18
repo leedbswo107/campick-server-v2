@@ -43,7 +43,8 @@ app.use(
   })
 );
 let corsOptions = {
-  origin: `http://localhost:${clientPort}`,
+  origin: `${process.env.CLIENT_URL}`,
+  // origin: `http://localhost:${clientPort}`,
   credentials: true,
 };
 app.use(cors(corsOptions));

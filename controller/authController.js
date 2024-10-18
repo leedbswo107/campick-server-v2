@@ -106,7 +106,7 @@ const login = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 3600000,
-        // sameSite: "none",
+        sameSite: "none",
       })
       .json({
         id: user._id,
@@ -125,7 +125,7 @@ const logout = (req, res) => {
     secure: process.env.NODE_ENV === "production",
     expires: new Date(0), // 만료 날짜를 과거로 설정하여 쿠키 삭제
     path: "/", // 모든 경로에서 쿠키 삭제
-    // sameSite: "none",
+    sameSite: "none",
   });
   res.status(200).json({ message: "Logged out" });
 };
@@ -246,7 +246,7 @@ const redirect = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 3600000,
-        // sameSite: "none",
+        sameSite: "none",
       })
       .redirect(`${origin}`);
   }
