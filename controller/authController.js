@@ -248,7 +248,7 @@ const redirect = async (req, res) => {
         maxAge: 3600000,
         sameSite: "none",
       })
-      .redirect(`${origin}`);
+      .redirect(`${origin}/`);
   }
 };
 module.exports = { register, login, logout, profile, authorize, redirect };
