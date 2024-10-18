@@ -3,6 +3,8 @@ const Mission = require("../models/Mission");
 const Post = require("../models/Post");
 const Review = require("../models/Review");
 const User = require("../models/User");
+const Blog = require("../models/blogPostModel");
+const SalePost = require("../models/salePostModel");
 const { encrypt } = require("../utils/encrypt");
 const { compareSync } = require("bcryptjs");
 
@@ -40,7 +42,9 @@ class UserService {
       await Bingo.findByIdAndDelete(userObjId);
       await Mission.findByIdAndDelete(userObjId);
       await Post.findByIdAndDelete(userObjId);
-      await Review.findByIdAndDelete(userObjId);
+      await Review.findOneAndDelete({ author: userObjId });
+      await Blog.findOneAndDelete({ authorId: userObjId });
+      await SalePost.findOneAndDelete({ authorId: userObjId });
       await User.findByIdAndDelete(userObjId);
       return { result: true, message: "User successfully deleted" };
     } catch (error) {
@@ -50,6 +54,16 @@ class UserService {
   async loginDateInfoUpdate(id, loginDate) {
     try {
       await User.findByIdAndUpdate(id, { $push: { loginDate } });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async duplicateEmailCheck(email) {
+    try {
+      const emailCheck = await User.findOne({ username: email });
+      let emailStatus = false;
+      if (emailCheck) return (emailStatus = true);
+      return emailStatus;
     } catch (error) {
       console.error(error);
     }
