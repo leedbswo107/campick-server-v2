@@ -239,7 +239,7 @@ const redirect = async (req, res) => {
   const token = await getUserId(req.session.key);
 
   if (!token) {
-    res.redirect(`${origin}`);
+    res.redirect(`${origin}/`);
   } else {
     res
       .cookie("token", token, {
