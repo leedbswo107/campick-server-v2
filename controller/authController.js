@@ -229,7 +229,7 @@ const redirect = async (req, res) => {
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
-    redirect_uri: redirect_uri,
+    redirect_uri: `${redirect_uri}/`,
     client_secret: client_secret,
     code: req.query.code,
   });
@@ -239,7 +239,7 @@ const redirect = async (req, res) => {
   const token = await getUserId(req.session.key);
 
   if (!token) {
-    res.redirect(`${origin}/`);
+    res.redirect(`${origin}`);
   } else {
     res
       .cookie("token", token, {
@@ -248,7 +248,7 @@ const redirect = async (req, res) => {
         maxAge: 3600000,
         sameSite: "none",
       })
-      .redirect(`${origin}/`);
+      .redirect(`${origin}`);
   }
 };
 module.exports = { register, login, logout, profile, authorize, redirect };
