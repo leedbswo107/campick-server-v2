@@ -239,15 +239,16 @@ const redirect = async (req, res) => {
   const token = await getUserId(req.session.key);
 
   if (!token) {
-    return console.log("Token is not exist");
+    res.redirect(`${origin}`);
+  } else {
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 3600000,
+        // sameSite: "none",
+      })
+      .redirect(`${origin}`);
   }
-  res
-    .cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
-      // sameSite: "none",
-    })
-    .redirect(`${origin}`);
 };
 module.exports = { register, login, logout, profile, authorize, redirect };
