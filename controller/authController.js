@@ -19,7 +19,7 @@ const { encrypt } = require("../utils/encrypt");
 const { BINGO_AREA } = require("../constants/bingoArea");
 
 const client_id = process.env.KAKAO_REST_API_KEY;
-const redirect_uri = `${process.env.CLIENT_URL}` + "/redirect";
+const redirect_uri = `${process.env.CLIENT_URL}` + "redirect";
 const token_uri = process.env.TOKEN_URI;
 const api_host = process.env.API_HOST;
 const client_secret = process.env.CLIENT_SECRET;
