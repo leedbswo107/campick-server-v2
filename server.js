@@ -13,6 +13,7 @@ const authRoutes = require("./routes/authRoutes");
 const campsiteRoutes = require("./routes/campsiteRoutes");
 const blogPostRoutes = require("./routes/blogPostRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const checkoutRoutes = require("./routes/checkoutRoutes");
 
 const { app, server } = require("./utils/socket");
 const { scheduleCouponExpirationCheck } = require("./utils/cron");
@@ -63,6 +64,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/", myPageRoute);
 app.use("/", authRoutes);
 app.use("/", campsiteRoutes);
+app.use("/api/checkout", checkoutRoutes);
 
 db.connectDB();
 
