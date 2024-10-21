@@ -226,6 +226,7 @@ const getUserId = async (sessionKey) => {
   return token;
 };
 const redirect = async (req, res) => {
+  console.log('access check test1');
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
@@ -237,7 +238,7 @@ const redirect = async (req, res) => {
   var rtn = await call("POST", token_uri, param, header);
   req.session.key = rtn.access_token;
   const token = await getUserId(req.session.key);
-
+  console.log('access check test2');
   if (!token) {
     console.log('토큰이 없어요.');
     res.redirect(origin);
