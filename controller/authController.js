@@ -152,6 +152,7 @@ const authorize = async (req, res) => {
     scopeParam = `&scope=${scope}`;
   }
   console.log('authorize access check test');
+  console.log('Redirecting to Kakao:', `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`);
   res
     .status(302)
     .redirect(
