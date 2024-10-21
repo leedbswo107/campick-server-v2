@@ -151,11 +151,9 @@ const authorize = async (req, res) => {
   if (scope) {
     scopeParam = `&scope=${scope}`;
   }
-  res
-    .status(302)
-    .redirect(
-      `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`
-    );
+  const uri = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`;
+  const encoded = encodeURI(uri);
+  res.status(302).redirect(encoded);
 };
 
 const call = async (method, uri, param, header) => {
@@ -233,7 +231,10 @@ const redirect = async (req, res) => {
     client_secret: client_secret,
     code: req.query.code,
   });
-  const header = { "content-type": "application/x-www-form-urlencoded" };
+  const header = {
+    "content-type": "application/x-www-form-urlencoded",
+    credential: true,
+  };
   var rtn = await call("POST", token_uri, param, header);
   req.session.key = rtn.access_token;
   const token = await getUserId(req.session.key);
