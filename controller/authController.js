@@ -151,6 +151,7 @@ const authorize = async (req, res) => {
   if (scope) {
     scopeParam = `&scope=${scope}`;
   }
+  console.log('authorize access check test');
   res
     .status(302)
     .redirect(
