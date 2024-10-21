@@ -153,9 +153,7 @@ const authorize = async (req, res) => {
   }
   const uri = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`;
   const encoded = encodeURI(uri);
-  res
-    .status(302)
-    .redirect(encoded);
+  res.status(302).redirect(encoded);
 };
 
 const call = async (method, uri, param, header) => {
