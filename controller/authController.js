@@ -170,8 +170,10 @@ const call = async (method, uri, param, header) => {
 
   try {
     const response = await fetch(uri, options);
+    console.log('call access check test1');
     if (!response.ok) throw response;
     const data = await response.json();
+    console.log('call access check test2');
     return data;
   } catch (err) {
     if (err.json) {
@@ -237,6 +239,7 @@ const redirect = async (req, res) => {
   });
   const header = { "content-type": "application/x-www-form-urlencoded" };
   var rtn = await call("POST", token_uri, param, header);
+  console.log('rtn req check test');
   req.session.key = rtn.access_token;
   const token = await getUserId(req.session.key);
   console.log('access check test2');
