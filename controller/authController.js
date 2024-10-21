@@ -239,8 +239,10 @@ const redirect = async (req, res) => {
   const token = await getUserId(req.session.key);
 
   if (!token) {
+    console.log('토큰이 없어요.');
     res.redirect(origin);
   } else {
+    console.log('토큰이 있어요.');
     res
       .cookie("token", token, {
         httpOnly: true,
