@@ -229,7 +229,7 @@ const redirect = async (req, res) => {
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
-    redirect_uri: `${redirect_uri}/`,
+    redirect_uri: redirect_uri,
     client_secret: client_secret,
     code: req.query.code,
   });
