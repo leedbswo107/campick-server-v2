@@ -151,8 +151,6 @@ const authorize = async (req, res) => {
   if (scope) {
     scopeParam = `&scope=${scope}`;
   }
-  console.log('authorize access check test');
-  console.log('Redirecting to Kakao:', `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`);
   const uri = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`;
   const encoded = encodeURI(uri);
   res
@@ -171,10 +169,8 @@ const call = async (method, uri, param, header) => {
 
   try {
     const response = await fetch(uri, options);
-    console.log('call access check test1');
     if (!response.ok) throw response;
     const data = await response.json();
-    console.log('call access check test2');
     return data;
   } catch (err) {
     if (err.json) {
@@ -230,8 +226,6 @@ const getUserId = async (sessionKey) => {
   return token;
 };
 const redirect = async (req, res) => {
-  console.log('access check test1');
-  console.log('origin', origin);
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
@@ -244,15 +238,11 @@ const redirect = async (req, res) => {
     credential: true,
   };
   var rtn = await call("POST", token_uri, param, header);
-  console.log('rtn req check test');
   req.session.key = rtn.access_token;
   const token = await getUserId(req.session.key);
-  console.log('access check test2');
   if (!token) {
-    console.log('토큰이 없어요.');
     res.redirect(origin);
   } else {
-    console.log('토큰이 있어요.');
     res
       .cookie("token", token, {
         httpOnly: true,
