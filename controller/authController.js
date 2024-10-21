@@ -238,7 +238,10 @@ const redirect = async (req, res) => {
     client_secret: client_secret,
     code: req.query.code,
   });
-  const header = { "content-type": "application/x-www-form-urlencoded" };
+  const header = {
+    "content-type": "application/x-www-form-urlencoded",
+    credential: true,
+  };
   var rtn = await call("POST", token_uri, param, header);
   console.log('rtn req check test');
   req.session.key = rtn.access_token;
