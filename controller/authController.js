@@ -231,6 +231,7 @@ const getUserId = async (sessionKey) => {
 };
 const redirect = async (req, res) => {
   console.log('access check test1');
+  console.log('origin', origin);
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
