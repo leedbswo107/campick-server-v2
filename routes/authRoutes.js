@@ -5,6 +5,7 @@ const {
   register,
   login,
   logout,
+  kakaoLogout,
   profile,
   authorize,
   redirect,
@@ -13,6 +14,7 @@ const {
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
+router.post("/kakaoLogout", kakaoLogout);
 router.get("/profile", profile);
 router.get("/authorize", authorize);
 router.get("/redirect", redirect);

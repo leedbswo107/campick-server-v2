@@ -20,6 +20,7 @@ const { BINGO_AREA } = require("../constants/bingoArea");
 
 const client_id = process.env.KAKAO_REST_API_KEY;
 const redirect_uri = process.env.REDIRECT_URI;
+const logout_redirect_uri = process.env.KAKAO_LOGOUT_REDIRECT_URI;
 const token_uri = process.env.TOKEN_URI;
 const api_host = process.env.API_HOST;
 const client_secret = process.env.CLIENT_SECRET;
@@ -91,7 +92,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       { username, id: user._id, nickname: user.nickname },
-      "your_jwt_secret",
+      process.env.JWT_SECRET,
       {
         expiresIn: "1h",
       }
@@ -106,7 +107,7 @@ const login = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 3600000,
-        sameSite: "none",
+        // sameSite: "none",
       })
       .json({
         id: user._id,
@@ -125,7 +126,7 @@ const logout = (req, res) => {
     secure: process.env.NODE_ENV === "production",
     expires: new Date(0), // 만료 날짜를 과거로 설정하여 쿠키 삭제
     path: "/", // 모든 경로에서 쿠키 삭제
-    sameSite: "none",
+    // sameSite: "none",
   });
   res.status(200).json({ message: "Logged out" });
 };
@@ -136,7 +137,7 @@ const profile = async (req, res) => {
   if (!token) return res.json("토큰정보가 없어요");
 
   try {
-    jwt.verify(token, "your_jwt_secret", {}, (err, info) => {
+    jwt.verify(token, process.env.JWT_SECRET, {}, (err, info) => {
       if (err) throw err;
       res.json(info);
     });
@@ -190,7 +191,7 @@ const kakaoLogin = async (info) => {
         nickname: user.nickname,
         password: user.password,
       },
-      "your_jwt_secret",
+      process.env.JWT_SECRET,
       {
         expiresIn: "1h",
       }
@@ -200,6 +201,31 @@ const kakaoLogin = async (info) => {
   } catch (error) {
     console.error("Error logging in:", error);
   }
+};
+const kakaoLogout = async (req, res) => {
+  // const data = await fetch(
+  //   `https://kauth.kakao.com/oauth/logout?client_id=${client_id}&logout_redirect_uri=${logout_redirect_uri}`,
+  //   { credentials: "include" }
+  // );
+  // console.log("test data : ", data);
+  // await axios.get(
+  //   `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_REST_API_KEY}&logout_redirect_uri=${KAKAO_LOGOUT_REDIRECT_URI}`
+  // )
+  const uri = api_host + "/v1/user/logout";
+  const param = null;
+  const header = {
+    Authorization: "Bearer " + req.session.key,
+  };
+  var rtn = await call("POST", uri, param, header);
+  res
+    .cookie("token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: new Date(0), // 만료 날짜를 과거로 설정하여 쿠키 삭제
+      path: "/", // 모든 경로에서 쿠키 삭제
+      // sameSite: "none",
+    })
+    .send(rtn);
 };
 const kakaoEmailEnroll = async (info) => {
   const tr = await createUser(info.email, "kakaoTest", info.profile.nickname);
@@ -246,9 +272,17 @@ const redirect = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 3600000,
-        sameSite: "none",
+        // sameSite: "none",
       })
       .redirect(origin);
   }
 };
-module.exports = { register, login, logout, profile, authorize, redirect };
+module.exports = {
+  register,
+  login,
+  logout,
+  profile,
+  authorize,
+  redirect,
+  kakaoLogout,
+};
