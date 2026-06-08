@@ -10,63 +10,30 @@ const { compareSync } = require("bcryptjs");
 
 class UserService {
   async createUser(username, password, nickname) {
-    try {
-      const tr = await User.create({
-        username,
-        password,
-        nickname,
-      });
-      return tr;
-    } catch (error) {
-      console.error(error);
-    }
+    return await User.create({ username, password, nickname });
   }
   async getUserByUserName(username) {
-    try {
-      const user = await User.findOne({ username });
-      return user;
-    } catch (error) {
-      console.error(error);
-    }
+    return await User.findOne({ username });
   }
   async getUserById(id) {
-    try {
-      const user = await User.findById(id);
-      return user;
-    } catch (error) {
-      console.error(error);
-    }
+    return await User.findById(id);
   }
   async deleteUser(userObjId) {
-    try {
-      await Bingo.findByIdAndDelete(userObjId);
-      await Mission.findByIdAndDelete(userObjId);
-      await Post.findByIdAndDelete(userObjId);
-      await Review.findOneAndDelete({ author: userObjId });
-      await Blog.findOneAndDelete({ authorId: userObjId });
-      await SalePost.findOneAndDelete({ authorId: userObjId });
-      await User.findByIdAndDelete(userObjId);
-      return { result: true, message: "User successfully deleted" };
-    } catch (error) {
-      console.error(error);
-    }
+    await Bingo.findByIdAndDelete(userObjId);
+    await Mission.findByIdAndDelete(userObjId);
+    await Post.findByIdAndDelete(userObjId);
+    await Review.findOneAndDelete({ author: userObjId });
+    await Blog.findOneAndDelete({ authorId: userObjId });
+    await SalePost.findOneAndDelete({ authorId: userObjId });
+    await User.findByIdAndDelete(userObjId);
+    return { result: true, message: "User successfully deleted" };
   }
   async loginDateInfoUpdate(id, loginDate) {
-    try {
-      await User.findByIdAndUpdate(id, { $push: { loginDate } });
-    } catch (error) {
-      console.error(error);
-    }
+    await User.findByIdAndUpdate(id, { $push: { loginDate } });
   }
   async duplicateEmailCheck(email) {
-    try {
-      const emailCheck = await User.findOne({ username: email });
-      let emailStatus = false;
-      if (emailCheck) return (emailStatus = true);
-      return emailStatus;
-    } catch (error) {
-      console.error(error);
-    }
+    const emailCheck = await User.findOne({ username: email });
+    return !!emailCheck;
   }
   async duplicateNickname(nickname) {
     const nicknameCheck = await User.findOne({ nickname });
@@ -74,26 +41,17 @@ class UserService {
     return { message: "Can use this nickname" };
   }
   async updateUserData(userObjId, nickname, password) {
-    try {
-      const hashedPassword = encrypt(password);
-      await User.findByIdAndUpdate(
-        userObjId,
-        { nickname, password: hashedPassword },
-        { new: true }
-      );
-      return { result: true };
-    } catch (error) {
-      console.error(error);
-    }
+    const hashedPassword = encrypt(password);
+    await User.findByIdAndUpdate(
+      userObjId,
+      { nickname, password: hashedPassword },
+      { new: true }
+    );
+    return { result: true };
   }
   async passwordCheck(id, password) {
-    try {
-      const user = await User.findById(id);
-      const validPassword = compareSync(password, user.password);
-      if (validPassword) return true;
-    } catch (error) {
-      console.error(error);
-    }
+    const user = await User.findById(id);
+    return compareSync(password, user.password);
   }
 }
 module.exports = new UserService();
