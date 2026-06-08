@@ -69,13 +69,9 @@ class UserService {
     }
   }
   async duplicateNickname(nickname) {
-    try {
-      const nicknameCheck = await User.findOne({ nickname });
-      if (nicknameCheck) throw new Error("Nickname already exists");
-      return { message: "Can use this nickname" };
-    } catch (error) {
-      console.error(error);
-    }
+    const nicknameCheck = await User.findOne({ nickname });
+    if (nicknameCheck) throw new Error("Nickname already exists");
+    return { message: "Can use this nickname" };
   }
   async updateUserData(userObjId, nickname, password) {
     try {

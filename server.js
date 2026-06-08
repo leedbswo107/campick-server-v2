@@ -36,15 +36,15 @@ cloudinary.config({
 
 app.use(
   session({
-    secret: "your session secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
   })
 );
 let corsOptions = {
-  origin: `${process.env.CLIENT_URL}`,
-  // origin: `http://localhost:${clientPort}`,
+  // origin: `${process.env.CLIENT_URL}`,
+  origin: `http://localhost:${clientPort}`,
   credentials: true,
 };
 app.use(cors(corsOptions));

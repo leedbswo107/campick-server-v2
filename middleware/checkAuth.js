@@ -11,7 +11,7 @@ const checkAuth = async (req, res, next) => {
         .json({ result: false, message: "로그인이 필요합니다" });
     }
 
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {
       return res
