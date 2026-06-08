@@ -130,7 +130,7 @@ const getBingo = async (req, res) => {
     const bingo = await getUserBingo(userObjId);
     res.status(200).json({ bingo });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const getBingoCountFunc = async (req, res) => {
@@ -139,7 +139,7 @@ const getBingoCountFunc = async (req, res) => {
     const bingoCount = await getBingoCount(userObjId);
     res.status(200).json({ bingoCount });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const getBingoPatternStatus = async (req, res) => {
@@ -148,7 +148,7 @@ const getBingoPatternStatus = async (req, res) => {
     const bingoPattern = await getBingoPattern(userObjId);
     res.status(200).json({ bingoPattern });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const bingoStatusReset = async (req, res) => {
@@ -158,7 +158,7 @@ const bingoStatusReset = async (req, res) => {
     await resetMission(userObjId);
     res.status(200).json({ result: true, bingo });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const getPost = async (req, res) => {
@@ -167,7 +167,7 @@ const getPost = async (req, res) => {
     const blogPost = await getBlogPostByAuthorId(authorId);
     res.status(200).json({ result: true, blogPost });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const getSalePost = async (req, res) => {
@@ -176,7 +176,7 @@ const getSalePost = async (req, res) => {
     const salePost = await getSalePostById(authorId);
     res.status(200).json({ result: true, salePost });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 

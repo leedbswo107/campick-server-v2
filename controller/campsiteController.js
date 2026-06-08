@@ -13,7 +13,7 @@ const getReviews = async (req, res) => {
     const reviews = await getReviewByContentId(contentId);
     res.status(200).json({ reviews });
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const createReview = async (req, res) => {
@@ -38,7 +38,7 @@ const deleteReview = async (req, res) => {
     const review = await deleteReviewById(reviewId);
     res.status(200).json(review);
   } catch (error) {
-    console.error(error);
+    res.status(500).json({ result: false, message: error.message });
   }
 };
 const editReview = async (req, res) => {
