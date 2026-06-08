@@ -21,6 +21,7 @@ const {
 
 const {
   getCoupons,
+  createCoupon,
   availableCoupons,
   removeCoupon,
   expiredCoupon,

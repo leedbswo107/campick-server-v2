@@ -3,6 +3,8 @@ const Mission = require("../models/Mission");
 const Post = require("../models/Post");
 const Review = require("../models/Review");
 const User = require("../models/User");
+const Blog = require("../models/blogPostModel");
+const SalePost = require("../models/salePostModel");
 const { encrypt } = require("../utils/encrypt");
 const { compareSync } = require("bcryptjs");
 
@@ -40,7 +42,9 @@ class UserService {
       await Bingo.findByIdAndDelete(userObjId);
       await Mission.findByIdAndDelete(userObjId);
       await Post.findByIdAndDelete(userObjId);
-      await Review.findByIdAndDelete(userObjId);
+      await Review.findOneAndDelete({ author: userObjId });
+      await Blog.findOneAndDelete({ authorId: userObjId });
+      await SalePost.findOneAndDelete({ authorId: userObjId });
       await User.findByIdAndDelete(userObjId);
       return { result: true, message: "User successfully deleted" };
     } catch (error) {
@@ -54,14 +58,20 @@ class UserService {
       console.error(error);
     }
   }
-  async duplicateNickname(nickname) {
+  async duplicateEmailCheck(email) {
     try {
-      const nicknameCheck = await User.findOne({ nickname });
-      if (nicknameCheck) throw new Error("Nickname already exists");
-      return { message: "Can use this nickname" };
+      const emailCheck = await User.findOne({ username: email });
+      let emailStatus = false;
+      if (emailCheck) return (emailStatus = true);
+      return emailStatus;
     } catch (error) {
       console.error(error);
     }
+  }
+  async duplicateNickname(nickname) {
+    const nicknameCheck = await User.findOne({ nickname });
+    if (nicknameCheck) throw new Error("Nickname already exists");
+    return { message: "Can use this nickname" };
   }
   async updateUserData(userObjId, nickname, password) {
     try {

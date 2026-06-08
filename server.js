@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("cookie-session");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -12,6 +13,7 @@ const authRoutes = require("./routes/authRoutes");
 const campsiteRoutes = require("./routes/campsiteRoutes");
 const blogPostRoutes = require("./routes/blogPostRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const checkoutRoutes = require("./routes/checkoutRoutes");
 
 const { app, server } = require("./utils/socket");
 const { scheduleCouponExpirationCheck } = require("./utils/cron");
@@ -29,7 +31,24 @@ cloudinary.config({
 });
 
 // app.use(cors({ credentials: true, origin: `${process.env.CLIENT_URL}` }));
-app.use(cors({ credentials: true, origin: `http://localhost:${clientPort}` }));
+
+// app.use(cors({ credentials: true, origin: `http://localhost:${clientPort}` }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
+let corsOptions = {
+  // origin: `${process.env.CLIENT_URL}`,
+  origin: `http://localhost:${clientPort}`,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -46,6 +65,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/", myPageRoute);
 app.use("/", authRoutes);
 app.use("/", campsiteRoutes);
+app.use("/api/checkout", checkoutRoutes);
 
 db.connectDB();
 
