@@ -25,8 +25,8 @@ router.post("/inquiry", updateInquiry);
 
 router.route("/user/:id").put(updateUser).delete(deleteUserInfo);
 
-router.post("/duplicateCheck", duplicateCheck);
-router.post("/passwordCheck/:id", pwCheck);
+router.post("/duplicate-check", duplicateCheck);
+router.post("/password-check/:id", pwCheck);
 
 router.get("/bingo-area/:id", getBingo);
 router.get("/bingo-count/:id", getBingoCountFunc);

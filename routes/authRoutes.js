@@ -14,7 +14,7 @@ const {
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
-router.post("/kakaoLogout", kakaoLogout);
+router.post("/kakao-logout", kakaoLogout);
 router.get("/profile", profile);
 router.get("/authorize", authorize);
 router.get("/redirect", redirect);

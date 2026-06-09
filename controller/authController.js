@@ -1,8 +1,5 @@
-const express = require("express");
-const app = express();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
 const qs = require("qs");
 
 const {
@@ -25,10 +22,6 @@ const token_uri = process.env.TOKEN_URI;
 const api_host = process.env.API_HOST;
 const client_secret = process.env.CLIENT_SECRET;
 const origin = process.env.ORIGIN;
-const users = []; // 임시로 메모리에 사용자 데이터를 저장합니다.
-
-app.use(cookieParser());
-
 // 회원가입 함수
 const register = async (req, res) => {
   try {
