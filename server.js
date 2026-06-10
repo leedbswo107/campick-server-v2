@@ -62,9 +62,9 @@ app.use("/api", imageRoutes);
 app.use("/api/sale-posts", salePostRoutes);
 app.use("/api/blog-posts", blogPostRoutes);
 app.use("/api/messages", messageRoutes);
-app.use("/", myPageRoute);
-app.use("/", authRoutes);
-app.use("/", campsiteRoutes);
+app.use("/api/my-page", myPageRoute);
+app.use("/api/auth", authRoutes);
+app.use("/api/campsites", campsiteRoutes);
 app.use("/api/checkout", checkoutRoutes);
 
 db.connectDB();
